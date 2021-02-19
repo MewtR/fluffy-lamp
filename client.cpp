@@ -1,12 +1,10 @@
-#include "server.h"
-#include <arpa/inet.h>
-#include <cstdlib>
-#include <netinet/in.h>
+#include "client.h"
+#include <string>
 
 int main()
 {
     int received;
-    std::string msg = "Hello from client";
+    std::string msg;
     char buffer[1024] = {0};
     struct sockaddr_in address;
     address.sin_family = AF_INET;
@@ -29,11 +27,14 @@ int main()
         std::cout << "Connection failed" << std::endl;
         exit(EXIT_FAILURE);
     }
-
+    while(true)
+    {
+    std::cout << "Enter the message to be sent" << std::endl;
+    std::getline(std::cin, msg);
     send(sockfd, msg.c_str(), msg.length(), 0);
-    std::cout << "Message sent" << std::endl;
+    std::cout << "Message sent: "<< msg <<  std::endl;
     received = read(sockfd, buffer, 1024);
-    std::cout << "Message received: " << std::endl;
-    printf("%s\n", buffer);
+    std::cout << "Message received: " << buffer << std::endl;
+    }
     return 0;
 }

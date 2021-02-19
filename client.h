@@ -1,15 +1,15 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
+#include <sstream>
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <cstdlib>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <cstring>
 
 #define PORT 9000
 
-#endif /* SERVER_H */
+#endif /* CLIENT_H */
 

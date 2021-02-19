@@ -37,11 +37,15 @@ int main()
         exit(EXIT_FAILURE);
     }
 
+    while(true)
+    {
     received = read(new_socket, buffer, 1024);
-    std::cout << "Message received: " << std::endl;
-    printf("%s\n", buffer);
+    if (received <= 0) break;
+    std::cout << "Message received: " << buffer << std::endl;
     send(new_socket, msg.c_str(), msg.length(), 0);
     std::cout << "Replied" << std::endl;
+    std::memset(buffer, 0, sizeof(buffer));
+    }
 
     return 0;
 }
