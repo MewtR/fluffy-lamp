@@ -7,7 +7,7 @@ project(tcp_server)
 
 find_package(Threads REQUIRED)
 
-add_executable(server server.cpp)
+add_executable(server server.cpp user.cpp)
 add_executable(client client.cpp)
 
 target_link_libraries(server ${CMAKE_THREAD_LIBS_INIT})
