@@ -30,6 +30,8 @@ int main()
         exit(EXIT_FAILURE);
     }
 
+    while(true)
+    {
     int new_socket = accept(sockfd, (sockaddr *)(&address), (socklen_t *)&address_length);
     if(new_socket < 0)
     {
@@ -37,15 +39,20 @@ int main()
         exit(EXIT_FAILURE);
     }
 
+    std::thread([new_socket](){
+    // needs to be in a thread
     while(true)
     {
-    received = read(new_socket, buffer, 1024);
-    if (received <= 0) break;
-    std::cout << "Message received: " << buffer << std::endl;
-    send(new_socket, msg.c_str(), msg.length(), 0);
-    std::cout << "Replied" << std::endl;
-    std::memset(buffer, 0, sizeof(buffer));
+        int received;
+        char buffer[1024] = {0};
+        received = read(new_socket, buffer, 1024);
+        std::string msg = "Hello from server";
+        if (received <= 0) break;
+        std::cout << "Message received: " << buffer << std::endl;
+        send(new_socket, msg.c_str(), msg.length(), 0);
+        std::cout << "Replied" << std::endl;
+        std::memset(buffer, 0, sizeof(buffer));
+    } }).detach();
     }
-
     return 0;
 }
