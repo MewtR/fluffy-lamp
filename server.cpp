@@ -1,4 +1,5 @@
 #include "server.h"
+#include "protocol.h"
 
 int main()
 {
@@ -43,11 +44,11 @@ int main()
         int received;
         char buffer[1024] = {0};
         received = read(new_socket, buffer, 1024);
-        std::string msg = "Hello from server";
         if (received <= 0) break;
-        std::cout << "Message received: " << buffer << std::endl;
+        std::string copy(buffer);
+        handle_request(copy);
+        std::string msg = "Hello from server";
         send(new_socket, msg.c_str(), msg.length(), 0);
-        std::cout << "Replied" << std::endl;
         std::memset(buffer, 0, sizeof(buffer));
     } }).detach();
     }
