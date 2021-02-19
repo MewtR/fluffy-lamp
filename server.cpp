@@ -2,9 +2,6 @@
 
 int main()
 {
-    int received;
-    char buffer[1024] = {0};
-    std::string msg = "Hello from server";
     struct sockaddr_in address;
     address.sin_port = htons(PORT);
     address.sin_family = AF_INET;
