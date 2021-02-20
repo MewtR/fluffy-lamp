@@ -2,14 +2,14 @@
 
 User::User(std::string name): name(name), age(0){}
 
-void User::set_age(int age)
+void User::set_age(int a)
 {
-    age = age;
+    age = a;
 }
 
-void User::set_country(std::string country)
+void User::set_country(std::string c)
 {
-    country = country;
+    country = c;
 }
 
 std::string User::to_string() const
