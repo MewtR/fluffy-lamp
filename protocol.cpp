@@ -2,6 +2,9 @@
 
 std::string handle_request(std::string request)
 {
+    boost::uuids::random_generator gen;
+    boost::uuids::uuid u = gen();
+    std::cout << "My uuid " << u << std::endl;
     boost::trim(request);
     std::cout << "Request received " << request << std::endl;
     auto space = request.find(" ");
