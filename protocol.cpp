@@ -15,7 +15,7 @@ std::string handle_request(std::string request, std::map<boost::uuids::uuid, Use
         }else if(request == "DONE")
         {
             // Close connection
-            return "Need to close the connection here";
+            return "DONE";
         }else{
             return "Unknown command";
         }

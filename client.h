@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <string>
+#include <cstring>
 
 #define PORT 9000
 

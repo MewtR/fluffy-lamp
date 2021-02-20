@@ -1,5 +1,4 @@
 #include "client.h"
-#include <string>
 
 int main()
 {
@@ -33,7 +32,13 @@ int main()
     std::getline(std::cin, msg);
     send(sockfd, msg.c_str(), msg.length(), 0);
     received = read(sockfd, buffer, 1024);
-    std::cout << "Message received: " << buffer << std::endl;
+    std::string copy(buffer);
+    std::memset(buffer, 0, sizeof(buffer));
+    if(received <= 0 || copy == "DONE"){
+        std::cout << "Connection closed" << std::endl;
+        break;
+    }
+    std::cout << "Message received: " << copy << std::endl;
     }
     return 0;
 }
