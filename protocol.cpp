@@ -22,35 +22,17 @@ std::string handle_request(std::string request, std::map<boost::uuids::uuid, Use
     if( space == std::string::npos)
     {
         // No space found single word
-        if(request == "LIST")
-        {
-            // List 
-            return list(users);
-        }else if(request == "DONE")
-        {
-            // Close connection
-            return "DONE";
-        }else{
-            return "Unknown command";
-        }
+        if(request == "LIST") { return list(users); }
+        else if(request == "DONE") { return "DONE"; }
+        else{ return "Unknown command";}
     }else{
         std::string command = request.substr(0,space);
         std::string arg = request.substr(space+1);
-        if(command == "REGISTER")
-        {
-            return register_user(arg, users);
-        }else if(command == "AGE")
-        {
-            return age(arg, users);
-        }else if(command == "COUNTRY")
-        {
-            return "Need to set country here: "+ arg;
-        }else if(command == "UNREGISTER")
-        {
-            return "Need unregister user with id: "+ arg;
-        }else{
-            return "Unknown command";
-        }
+        if(command == "REGISTER") { return register_user(arg, users); }
+        else if(command == "AGE") { return age(arg, users); }
+        else if(command == "COUNTRY") { return country(arg, users); }
+        else if(command == "UNREGISTER") { return unregister(arg, users); }
+        else{ return "Unknown command";}
     }
 }
 
@@ -75,7 +57,7 @@ std::string list(std::map<boost::uuids::uuid, User> &users)
     return output;
 }
 
-std::string age(std::string arg, std::map<boost::uuids::uuid, User> &users )
+std::string age(std::string arg, std::map<boost::uuids::uuid, User> &users)
 {
     boost::trim(arg);
     auto space = arg.find(" ");
@@ -93,5 +75,37 @@ std::string age(std::string arg, std::map<boost::uuids::uuid, User> &users )
     }else{
         user->second.set_age(age);
         return user->second.to_string();
+    }
+}
+std::string country(std::string arg, std::map<boost::uuids::uuid, User> &users)
+{
+    boost::trim(arg);
+    auto space = arg.find(" ");
+    if( space == std::string::npos) return "Wrong number of arguments";
+    std::string u = arg.substr(0,space);
+    std::string country = arg.substr(space+1); 
+    boost::uuids::uuid uuid = string_to_uuid(u);
+    auto user = users.find(uuid);
+    if(user == std::end(users))
+    {
+        return "No User with such an id";
+    }else{
+        user->second.set_country(country);
+        return user->second.to_string();
+    }
+}
+std::string unregister(std::string arg, std::map<boost::uuids::uuid, User> &users)
+{
+    boost::trim(arg);
+    auto space = arg.find(" ");
+    if( space != std::string::npos) return "Wrong number of arguments";
+    boost::uuids::uuid uuid = string_to_uuid(arg);
+    auto user = users.find(uuid);
+    if(user == std::end(users))
+    {
+        return "No User with such an id";
+    }else{
+        users.erase(user);
+        return "User remove successfully";
     }
 }
