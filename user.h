@@ -4,7 +4,7 @@
 
 class User{
     public:
-        std::string to_string();
+        std::string to_string() const;
         User(std::string);
         void set_age(int);
         void set_country(std::string);

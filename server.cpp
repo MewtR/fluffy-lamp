@@ -1,8 +1,10 @@
 #include "server.h"
 #include "protocol.h"
+#include "user.h"
 
 int main()
 {
+    std::map<boost::uuids::uuid, User> users;
     struct sockaddr_in address;
     address.sin_port = htons(PORT);
     address.sin_family = AF_INET;
@@ -37,7 +39,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    std::thread([new_socket](){
+    std::thread([new_socket, &users]() mutable {
     // needs to be in a thread
     while(true)
     {
@@ -46,7 +48,7 @@ int main()
         received = read(new_socket, buffer, 1024);
         if (received <= 0) break;
         std::string copy(buffer);
-        std::string msg = handle_request(copy);
+        std::string msg = handle_request(copy, users);
         send(new_socket, msg.c_str(), msg.length(), 0);
         std::memset(buffer, 0, sizeof(buffer));
     } }).detach();
