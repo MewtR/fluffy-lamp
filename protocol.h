@@ -2,6 +2,7 @@
 #define PROTOCOL_H
 
 #include <iostream>
+#include <boost/algorithm/string.hpp>
 #include "user.h"
 
 
