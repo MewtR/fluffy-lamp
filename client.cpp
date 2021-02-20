@@ -32,7 +32,6 @@ int main()
     std::cout << "Enter the message to be sent" << std::endl;
     std::getline(std::cin, msg);
     send(sockfd, msg.c_str(), msg.length(), 0);
-    std::cout << "Message sent: "<< msg <<  std::endl;
     received = read(sockfd, buffer, 1024);
     std::cout << "Message received: " << buffer << std::endl;
     }

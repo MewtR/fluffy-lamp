@@ -6,6 +6,6 @@
 #include "user.h"
 
 
-void handle_request(std::string);
+std::string handle_request(std::string);
 
 #endif /* PROTOCOL_H */

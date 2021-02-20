@@ -46,8 +46,7 @@ int main()
         received = read(new_socket, buffer, 1024);
         if (received <= 0) break;
         std::string copy(buffer);
-        handle_request(copy);
-        std::string msg = "Hello from server";
+        std::string msg = handle_request(copy);
         send(new_socket, msg.c_str(), msg.length(), 0);
         std::memset(buffer, 0, sizeof(buffer));
     } }).detach();
