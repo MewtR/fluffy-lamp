@@ -8,6 +8,7 @@
 #include <boost/uuid/random_generator.hpp>
 #include "user.h"
 #include <string>
+#include <mutex>
 
 
 std::string handle_request(std::string, std::map<boost::uuids::uuid, User>&);
