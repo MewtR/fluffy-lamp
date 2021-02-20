@@ -24,7 +24,7 @@ int main()
         exit(EXIT_FAILURE);
     }
     
-    if (listen(sockfd, 8) < 0) // Maximum connections is 8
+    if (listen(sockfd, 10) < 0) // Maximum connections is 10
     {
         std::cout << "Unable to listen" << std::endl;
         exit(EXIT_FAILURE);
@@ -40,19 +40,25 @@ int main()
     }
 
     std::thread([new_socket, &users]() mutable {
-    // needs to be in a thread
-    while(true)
-    {
-        int received;
-        char buffer[1024] = {0};
-        received = read(new_socket, buffer, 1024);
-        if (received <= 0) break;
-        std::string copy(buffer);
-        std::memset(buffer, 0, sizeof(buffer));
-        std::string msg = handle_request(copy, users);
-        send(new_socket, msg.c_str(), msg.length(), 0);
-        if(msg == "DONE") break;
-    } }).detach();
+        std::mutex write_mutex; // protects write to socket
+        while(true)
+        {
+            int received;
+            char buffer[1024] = {0};
+            received = read(new_socket, buffer, 1024);
+            if (received <= 0) break;
+            std::string copy(buffer);
+            std::memset(buffer, 0, sizeof(buffer));
+            std::thread([new_socket,copy ,&users , &write_mutex]() mutable{
+
+            std::lock_guard<std::mutex> lock(write_mutex);
+            std::string msg = handle_request(copy, users);
+            send(new_socket, msg.c_str(), msg.length(), 0);
+            if(msg == "DONE") return;
+
+            }).detach();
+        } 
+        }).detach();
     }
     return 0;
 }

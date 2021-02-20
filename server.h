@@ -10,8 +10,8 @@
 #include <cstring>
 #include <thread> // Wrapper around pthread
 #include <map>
+#include <mutex>
 
 #define PORT 9000
 
 #endif /* SERVER_H */
-
